@@ -48,6 +48,8 @@ LSTM - Long Short-Term Memory (LSTM) networks are a type of recurrent neural net
 8. Analysis for next 30 days 
 
 ## TASK 3 : Music Recommendation System Machine Learning Model
+Music recommender system can suggest songs to users based on their listening pattern.
+
 ### Dataset Information
 In the dataset there are five different files is given for visualization and find meaningful insights from these . They are train dataset , test dataset , members dataset , songs dataset and songs extra information dataset . 
 
@@ -79,3 +81,5 @@ Model Used:-
 5. KNeighborsClassifier
 
 ## 🏆Best Accuracy score with Random forest Classifier
+
+## TASK 4 : Image to Pencil Sketch with Python
