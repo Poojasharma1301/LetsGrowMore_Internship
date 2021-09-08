@@ -106,3 +106,46 @@ Perform ‘Exploratory Data Analysis’ on dataset ‘Global Terrorism’.What a
 4.Filtering country names from countries with most terrorist attacks<br>
 5.Plotting the data to the bar graph for data of countries with most terrorist attacks.<br>
 6.Analysis Using Pie charts<br>
+
+## Library Used :- 
+1. Pandas
+2. NumPy
+3. Matplotlib 
+4. IPython
+5. Seaborn 
+6. Warnings
+7. Scikit learn
+
+## TASK 6 : Prediction using Decision Tree  Algorithm
+## Dataset Information:-
+The data set contains 3 classes of 50 instances each, where each class refers to a type of iris plant. One class is linearly separable from the other 2; the latter are NOT linearly separable from each other.Same Iris folwer dataset which is called the "Hello World" of machine learning is given.
+## Problem Statement:-
+Create the Decision Tree classifier and visualize it graphically. The purpose is if we feed any new data to this classifier, it would be able to  predict the right class accordingly.
+### Attribute Information:-
+-sepal length in cm<br>
+-sepal width in cm<br>
+-petal length in cm<br>
+-petal width in cm<br>
+### species: 
+1.Iris Setosa<br>
+2.Iris Versicolour <br>
+3.Iris Virginica<br>
+## Steps follow for solving this Problem :-
+1. Importing all necessary libraries<br>
+2. Importing Dataset<br>
+3. Visualization<br>
+4. Applying Decision tree algorithm<br>
+5. Making Desicion tree view using plot_tree <br>
+## Libraries Used
+1.pandas<br>
+2.matplotlib<br>
+3.seaborn<br>
+4.scikit-learn<br>
+5.Warnings
+## Observation:-
+1 .Sepal Length and Sepal Width are Normally Distributed.<br>
+2 .Petal Length and Petal Width both are rightly Skewed.<br>
+## Model Used:-
+1. Decision Tree Algorithm<br>
+## 🏆 Best Model Accuracy: 97.77%%<br>
+
