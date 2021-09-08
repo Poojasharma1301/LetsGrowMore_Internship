@@ -92,3 +92,17 @@ We need to read the image in RBG format and then convert it to a grayscale image
 3. Convert it into grayscale image
 4. Invert the image called negative image 
 5. Finally create pencil sketch by mixing grayscale and negative image
+
+## TASK 5 : Exploratory Data Analysis on Dataset - Terrorism
+### Problem Statement :-
+Perform ‘Exploratory Data Analysis’ on dataset ‘Global Terrorism’.What all security issues and insights you can derive by EDA?.As a security/defense analyst, try to find out the hot zone of terrorism.
+
+## Dataset: https://bit.ly/2TK5Xn5
+
+## Steps follow for solving this problem:-
+1.Import Necessary Libaries
+2.Import the Dataset
+3.Filtering Countries with most terrorist attacks.
+4.Filtering country names from countries with most terrorist attacks
+5.Plotting the data to the bar graph for data of countries with most terrorist attacks.
+6.Analysis Using Pie charts
