@@ -147,5 +147,5 @@ Create the Decision Tree classifier and visualize it graphically. The purpose is
 2 .Petal Length and Petal Width both are rightly Skewed.<br>
 ## Model Used:-
 1. Decision Tree Algorithm<br>
-## 🏆 Best Model Accuracy: 97.77%%<br>
+## 🏆 Best Model Accuracy: 97.77%<br>
 
