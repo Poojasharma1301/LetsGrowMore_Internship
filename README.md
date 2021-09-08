@@ -100,9 +100,9 @@ Perform ‘Exploratory Data Analysis’ on dataset ‘Global Terrorism’.What a
 ## Dataset: https://bit.ly/2TK5Xn5
 
 ## Steps follow for solving this problem:-
-1.Import Necessary Libaries
-2.Import the Dataset
-3.Filtering Countries with most terrorist attacks.
-4.Filtering country names from countries with most terrorist attacks
-5.Plotting the data to the bar graph for data of countries with most terrorist attacks.
-6.Analysis Using Pie charts
+1.Import Necessary Libaries<br>
+2.Import the Dataset<br>
+3.Filtering Countries with most terrorist attacks.<br>
+4.Filtering country names from countries with most terrorist attacks<br>
+5.Plotting the data to the bar graph for data of countries with most terrorist attacks.<br>
+6.Analysis Using Pie charts<br>
