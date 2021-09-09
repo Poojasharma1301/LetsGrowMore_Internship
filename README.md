@@ -149,3 +149,53 @@ Create the Decision Tree classifier and visualize it graphically. The purpose is
 1. Decision Tree Algorithm<br>
 ## 🏆 Best Model Accuracy: 97.77%<br>
 
+## TASK 7 : Develop A Neural Network That Can Read Handwriting
+we will classify handwritten digits using a simple neural network which has only input and output layers. We will than add a hidden layer and see how the performance of the model improves
+### Problem Statement:-
+Begin your neural network machine learning project with the MNIST Handwritten Digit Classification Challenge and using Tensorflow and CNN. It has a very user-friendly interface that’s ideal for beginners.
+### Dataset Information
+### MNIST Datasets
+MNIST stands for “Modified National Institute of Standards and Technology”. It is a dataset of 70,000 handwritten images. Each image is of 28x28 pixels i.e. about 784 features. Each feature represents only one pixel’s intensity i.e. from 0(white) to 255(black). This database is further divided into 60,000 training and 10,000 testing images.
+### Libraries Used:-
+1.Numpy<br>
+2.Matplotlib<br>
+3. Tensorflow<br>
+4. Keras<br>
+### Model Used:-
+Keras Sequential model<br>
+### Steps follow for solving this problem:-
+1.Import the Necessary libraries <br>
+2. Import the dataset<br>
+3. Create a Model<br>
+4. Pre-process the data<br>
+5. Compile the Model <br>
+6. Train the Model <br>
+7. Evaluate the Model<br>
+
+### Dataset Link: https://en.wikipedia.org/wiki/MNIST_database
+## 🏆 Best Model Accuracy: 98.32%<br>
+
+## TASK 8 : Next Word Prediction
+Most of the keyboards in smartphones give next word prediction features; google also uses next word prediction based on our browsing history. So a preloaded data is also stored in the keyboard function of our smartphones to predict the next word correctly.
+### Problem Statement:-
+Using Tensorflow and Keras library train a RNN, to predict the next word. 
+### Libraries Used:-
+1.Numpy<br>
+2.Matplotlib<br>
+3.Pickle<br>
+4. Keras<br>
+### Model Used:-
+LSTM(Recurrent Neural networks) 
+### Steps follow for solving this proble:-
+1. Import the Necessary libraries<br>
+2. Import the dataset<br>
+3. Feature engineering<br>
+4. Building the Recurrent Neural Network<br>
+5. Training the Model <br>
+6. Evaluate the Model<br>
+7. Testing the model<br>
+
+### Dataset Link: https://drive.google.com/file/d/1GeUzNVqiixXHnTl8oNiQ2W3CynX_lsu2/view
+
+
+
