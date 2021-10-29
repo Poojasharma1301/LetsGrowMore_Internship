@@ -1,0 +1,411 @@
+#importing libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.express as px
+import warnings
+warnings.filterwarnings('ignore')
+#importing dataset
+data = pd.read_csv('globalterrorismdb_0718dist.csv' ,encoding='latin1')
+#copying data set to df
+df =pd.DataFrame(data)
+data.head()
+eventid	iyear	imonth	iday	approxdate	extended	resolution	country	country_txt	region	...	addnotes	scite1	scite2	scite3	dbsource	INT_LOG	INT_IDEO	INT_MISC	INT_ANY	related
+0	1.970000e+11	1970	7	2	NaN	0	NaN	58	Dominican Republic	2	...	NaN	NaN	NaN	NaN	PGIS	0	0	0	0	NaN
+1	1.970000e+11	1970	0	0	NaN	0	NaN	130	Mexico	1	...	NaN	NaN	NaN	NaN	PGIS	0	1	1	1	NaN
+2	1.970010e+11	1970	1	0	NaN	0	NaN	160	Philippines	5	...	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1	NaN
+3	1.970010e+11	1970	1	0	NaN	0	NaN	78	Greece	8	...	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1	NaN
+4	1.970010e+11	1970	1	0	NaN	0	NaN	101	Japan	4	...	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1	NaN
+5 rows × 135 columns
+
+## Shaoe of the dataset
+data.shape
+(181691, 135)
+#columns to list to display all columns
+data.columns.tolist()
+['eventid',
+ 'iyear',
+ 'imonth',
+ 'iday',
+ 'approxdate',
+ 'extended',
+ 'resolution',
+ 'country',
+ 'country_txt',
+ 'region',
+ 'region_txt',
+ 'provstate',
+ 'city',
+ 'latitude',
+ 'longitude',
+ 'specificity',
+ 'vicinity',
+ 'location',
+ 'summary',
+ 'crit1',
+ 'crit2',
+ 'crit3',
+ 'doubtterr',
+ 'alternative',
+ 'alternative_txt',
+ 'multiple',
+ 'success',
+ 'suicide',
+ 'attacktype1',
+ 'attacktype1_txt',
+ 'attacktype2',
+ 'attacktype2_txt',
+ 'attacktype3',
+ 'attacktype3_txt',
+ 'targtype1',
+ 'targtype1_txt',
+ 'targsubtype1',
+ 'targsubtype1_txt',
+ 'corp1',
+ 'target1',
+ 'natlty1',
+ 'natlty1_txt',
+ 'targtype2',
+ 'targtype2_txt',
+ 'targsubtype2',
+ 'targsubtype2_txt',
+ 'corp2',
+ 'target2',
+ 'natlty2',
+ 'natlty2_txt',
+ 'targtype3',
+ 'targtype3_txt',
+ 'targsubtype3',
+ 'targsubtype3_txt',
+ 'corp3',
+ 'target3',
+ 'natlty3',
+ 'natlty3_txt',
+ 'gname',
+ 'gsubname',
+ 'gname2',
+ 'gsubname2',
+ 'gname3',
+ 'gsubname3',
+ 'motive',
+ 'guncertain1',
+ 'guncertain2',
+ 'guncertain3',
+ 'individual',
+ 'nperps',
+ 'nperpcap',
+ 'claimed',
+ 'claimmode',
+ 'claimmode_txt',
+ 'claim2',
+ 'claimmode2',
+ 'claimmode2_txt',
+ 'claim3',
+ 'claimmode3',
+ 'claimmode3_txt',
+ 'compclaim',
+ 'weaptype1',
+ 'weaptype1_txt',
+ 'weapsubtype1',
+ 'weapsubtype1_txt',
+ 'weaptype2',
+ 'weaptype2_txt',
+ 'weapsubtype2',
+ 'weapsubtype2_txt',
+ 'weaptype3',
+ 'weaptype3_txt',
+ 'weapsubtype3',
+ 'weapsubtype3_txt',
+ 'weaptype4',
+ 'weaptype4_txt',
+ 'weapsubtype4',
+ 'weapsubtype4_txt',
+ 'weapdetail',
+ 'nkill',
+ 'nkillus',
+ 'nkillter',
+ 'nwound',
+ 'nwoundus',
+ 'nwoundte',
+ 'property',
+ 'propextent',
+ 'propextent_txt',
+ 'propvalue',
+ 'propcomment',
+ 'ishostkid',
+ 'nhostkid',
+ 'nhostkidus',
+ 'nhours',
+ 'ndays',
+ 'divert',
+ 'kidhijcountry',
+ 'ransom',
+ 'ransomamt',
+ 'ransomamtus',
+ 'ransompaid',
+ 'ransompaidus',
+ 'ransomnote',
+ 'hostkidoutcome',
+ 'hostkidoutcome_txt',
+ 'nreleased',
+ 'addnotes',
+ 'scite1',
+ 'scite2',
+ 'scite3',
+ 'dbsource',
+ 'INT_LOG',
+ 'INT_IDEO',
+ 'INT_MISC',
+ 'INT_ANY',
+ 'related']
+#checking null item in dataset
+data.isnull().sum()
+eventid            0
+iyear              0
+imonth             0
+iday               0
+approxdate    172452
+               ...  
+INT_LOG            0
+INT_IDEO           0
+INT_MISC           0
+INT_ANY            0
+related       156653
+Length: 135, dtype: int64
+data.describe()
+eventid	iyear	imonth	iday	extended	country	region	latitude	longitude	specificity	...	ransomamt	ransomamtus	ransompaid	ransompaidus	hostkidoutcome	nreleased	INT_LOG	INT_IDEO	INT_MISC	INT_ANY
+count	1.816910e+05	181691.000000	181691.000000	181691.000000	181691.000000	181691.000000	181691.000000	177135.000000	1.771340e+05	181685.000000	...	1.350000e+03	5.630000e+02	7.740000e+02	552.000000	10991.000000	10400.000000	181691.000000	181691.000000	181691.000000	181691.000000
+mean	2.002704e+11	2002.638997	6.467277	15.505644	0.045346	131.968501	7.160938	23.498343	-4.586957e+02	1.451452	...	3.172530e+06	5.784865e+05	7.179437e+05	240.378623	4.629242	-29.018269	-4.543731	-4.464398	0.090010	-3.945952
+std	1.325955e+09	13.259430	3.388303	8.814045	0.208063	112.414535	2.933408	18.569242	2.047790e+05	0.995430	...	3.021157e+07	7.077924e+06	1.014392e+07	2940.967293	2.035360	65.720119	4.543547	4.637152	0.568457	4.691325
+min	1.970000e+11	1970.000000	0.000000	0.000000	0.000000	4.000000	1.000000	-53.154613	-8.618590e+07	1.000000	...	-9.900000e+01	-9.900000e+01	-9.900000e+01	-99.000000	1.000000	-99.000000	-9.000000	-9.000000	-9.000000	-9.000000
+25%	1.991020e+11	1991.000000	4.000000	8.000000	0.000000	78.000000	5.000000	11.510046	4.545640e+00	1.000000	...	0.000000e+00	0.000000e+00	-9.900000e+01	0.000000	2.000000	-99.000000	-9.000000	-9.000000	0.000000	-9.000000
+50%	2.009020e+11	2009.000000	6.000000	15.000000	0.000000	98.000000	6.000000	31.467463	4.324651e+01	1.000000	...	1.500000e+04	0.000000e+00	0.000000e+00	0.000000	4.000000	0.000000	-9.000000	-9.000000	0.000000	0.000000
+75%	2.014080e+11	2014.000000	9.000000	23.000000	0.000000	160.000000	10.000000	34.685087	6.871033e+01	1.000000	...	4.000000e+05	0.000000e+00	1.273412e+03	0.000000	7.000000	1.000000	0.000000	0.000000	0.000000	0.000000
+max	2.017120e+11	2017.000000	12.000000	31.000000	1.000000	1004.000000	12.000000	74.633553	1.793667e+02	5.000000	...	1.000000e+09	1.320000e+08	2.750000e+08	48000.000000	7.000000	2769.000000	1.000000	1.000000	1.000000	1.000000
+8 rows × 77 columns
+
+data.drop('approxdate' , axis =1 ,inplace =True)
+data.drop('related' , axis =1 ,inplace =True)
+data.drop('eventid', axis=1 , inplace = True)
+pd.set_option('display.max_columns',None)
+data.head()
+iyear	imonth	iday	extended	resolution	country	country_txt	region	region_txt	provstate	city	latitude	longitude	specificity	vicinity	location	summary	crit1	crit2	crit3	doubtterr	alternative	alternative_txt	multiple	success	suicide	attacktype1	attacktype1_txt	attacktype2	attacktype2_txt	attacktype3	attacktype3_txt	targtype1	targtype1_txt	targsubtype1	targsubtype1_txt	corp1	target1	natlty1	natlty1_txt	targtype2	targtype2_txt	targsubtype2	targsubtype2_txt	corp2	target2	natlty2	natlty2_txt	targtype3	targtype3_txt	targsubtype3	targsubtype3_txt	corp3	target3	natlty3	natlty3_txt	gname	gsubname	gname2	gsubname2	gname3	gsubname3	motive	guncertain1	guncertain2	guncertain3	individual	nperps	nperpcap	claimed	claimmode	claimmode_txt	claim2	claimmode2	claimmode2_txt	claim3	claimmode3	claimmode3_txt	compclaim	weaptype1	weaptype1_txt	weapsubtype1	weapsubtype1_txt	weaptype2	weaptype2_txt	weapsubtype2	weapsubtype2_txt	weaptype3	weaptype3_txt	weapsubtype3	weapsubtype3_txt	weaptype4	weaptype4_txt	weapsubtype4	weapsubtype4_txt	weapdetail	nkill	nkillus	nkillter	nwound	nwoundus	nwoundte	property	propextent	propextent_txt	propvalue	propcomment	ishostkid	nhostkid	nhostkidus	nhours	ndays	divert	kidhijcountry	ransom	ransomamt	ransomamtus	ransompaid	ransompaidus	ransomnote	hostkidoutcome	hostkidoutcome_txt	nreleased	addnotes	scite1	scite2	scite3	dbsource	INT_LOG	INT_IDEO	INT_MISC	INT_ANY
+0	1970	7	2	0	NaN	58	Dominican Republic	2	Central America & Caribbean	NaN	Santo Domingo	18.456792	-69.951164	1.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	1	Assassination	NaN	NaN	NaN	NaN	14	Private Citizens & Property	68.0	Named Civilian	NaN	Julio Guzman	58.0	Dominican Republic	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	MANO-D	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	13	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1.0	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	0	0	0	0
+1	1970	0	0	0	NaN	130	Mexico	1	North America	Federal	Mexico city	19.371887	-99.086624	1.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	6	Hostage Taking (Kidnapping)	NaN	NaN	NaN	NaN	7	Government (Diplomatic)	45.0	Diplomatic Personnel (outside of embassy, cons...	Belgian Ambassador Daughter	Nadine Chaval, daughter	21.0	Belgium	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	23rd of September Communist League	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	7.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	13	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	1.0	1.0	0.0	NaN	NaN	NaN	Mexico	1.0	800000.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	0	1	1	1
+2	1970	1	0	0	NaN	160	Philippines	5	Southeast Asia	Tarlac	Unknown	15.478598	120.599741	4.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	1	Assassination	NaN	NaN	NaN	NaN	10	Journalists & Media	54.0	Radio Journalist/Staff/Facility	Voice of America	Employee	217.0	United States	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	13	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1.0	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1
+3	1970	1	0	0	NaN	78	Greece	8	Western Europe	Attica	Athens	37.997490	23.762728	1.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	3	Bombing/Explosion	NaN	NaN	NaN	NaN	7	Government (Diplomatic)	46.0	Embassy/Consulate	NaN	U.S. Embassy	217.0	United States	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	6	Explosives	16.0	Unknown Explosive Type	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Explosive	NaN	NaN	NaN	NaN	NaN	NaN	1	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1
+4	1970	1	0	0	NaN	101	Japan	4	East Asia	Fukouka	Fukouka	33.580412	130.396361	1.0	0	NaN	NaN	1	1	1	-9.0	NaN	NaN	0.0	1	0	7	Facility/Infrastructure Attack	NaN	NaN	NaN	NaN	7	Government (Diplomatic)	46.0	Embassy/Consulate	NaN	U.S. Consulate	217.0	United States	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	8	Incendiary	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Incendiary	NaN	NaN	NaN	NaN	NaN	NaN	1	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1
+data.tail()
+iyear	imonth	iday	extended	resolution	country	country_txt	region	region_txt	provstate	city	latitude	longitude	specificity	vicinity	location	summary	crit1	crit2	crit3	doubtterr	alternative	alternative_txt	multiple	success	suicide	attacktype1	attacktype1_txt	attacktype2	attacktype2_txt	attacktype3	attacktype3_txt	targtype1	targtype1_txt	targsubtype1	targsubtype1_txt	corp1	target1	natlty1	natlty1_txt	targtype2	targtype2_txt	targsubtype2	targsubtype2_txt	corp2	target2	natlty2	natlty2_txt	targtype3	targtype3_txt	targsubtype3	targsubtype3_txt	corp3	target3	natlty3	natlty3_txt	gname	gsubname	gname2	gsubname2	gname3	gsubname3	motive	guncertain1	guncertain2	guncertain3	individual	nperps	nperpcap	claimed	claimmode	claimmode_txt	claim2	claimmode2	claimmode2_txt	claim3	claimmode3	claimmode3_txt	compclaim	weaptype1	weaptype1_txt	weapsubtype1	weapsubtype1_txt	weaptype2	weaptype2_txt	weapsubtype2	weapsubtype2_txt	weaptype3	weaptype3_txt	weapsubtype3	weapsubtype3_txt	weaptype4	weaptype4_txt	weapsubtype4	weapsubtype4_txt	weapdetail	nkill	nkillus	nkillter	nwound	nwoundus	nwoundte	property	propextent	propextent_txt	propvalue	propcomment	ishostkid	nhostkid	nhostkidus	nhours	ndays	divert	kidhijcountry	ransom	ransomamt	ransomamtus	ransompaid	ransompaidus	ransomnote	hostkidoutcome	hostkidoutcome_txt	nreleased	addnotes	scite1	scite2	scite3	dbsource	INT_LOG	INT_IDEO	INT_MISC	INT_ANY
+181686	2017	12	31	0	NaN	182	Somalia	11	Sub-Saharan Africa	Middle Shebelle	Ceelka Geelow	2.359673	45.385034	2.0	0	The incident occurred near the town of Balcad.	12/31/2017: Assailants opened fire on a Somali...	1	1	0	1.0	1.0	Insurgency/Guerilla Action	0.0	1	0	2	Armed Assault	NaN	NaN	NaN	NaN	4	Military	36.0	Military Checkpoint	Somali National Army (SNA)	Checkpoint	182.0	Somalia	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Al-Shabaab	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	-99.0	0.0	1.0	10.0	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	NaN	5	Firearms	5.0	Unknown Gun Type	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1.0	0.0	0.0	2.0	0.0	0.0	-9	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	"Somalia: Al-Shabaab Militants Attack Army Che...	"Highlights: Somalia Daily Media Highlights 2 ...	"Highlights: Somalia Daily Media Highlights 1 ...	START Primary Collection	0	0	0	0
+181687	2017	12	31	0	NaN	200	Syria	10	Middle East & North Africa	Lattakia	Jableh	35.407278	35.942679	1.0	1	The incident occurred at the Humaymim Airport.	12/31/2017: Assailants launched mortars at the...	1	1	0	1.0	1.0	Insurgency/Guerilla Action	0.0	1	0	3	Bombing/Explosion	NaN	NaN	NaN	NaN	4	Military	27.0	Military Barracks/Base/Headquarters/Checkpost	Russian Air Force	Hmeymim Air Base	167.0	Russia	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Muslim extremists	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	-99.0	0.0	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	6	Explosives	11.0	Projectile (rockets, mortars, RPGs, etc.)	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Mortars were used in the attack.	2.0	0.0	0.0	7.0	0.0	0.0	1	4.0	Unknown	-99.0	Seven military planes were damaged in this att...	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	"Putin's 'victory' in Syria has turned into a ...	"Two Russian soldiers killed at Hmeymim base i...	"Two Russian servicemen killed in Syria mortar...	START Primary Collection	-9	-9	1	1
+181688	2017	12	31	0	NaN	160	Philippines	5	Southeast Asia	Maguindanao	Kubentog	6.900742	124.437908	2.0	0	The incident occurred in the Datu Hoffer distr...	12/31/2017: Assailants set fire to houses in K...	1	1	1	0.0	NaN	NaN	0.0	1	0	7	Facility/Infrastructure Attack	NaN	NaN	NaN	NaN	14	Private Citizens & Property	76.0	House/Apartment/Residence	Not Applicable	Houses	160.0	Philippines	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Bangsamoro Islamic Freedom Movement (BIFM)	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	-99.0	0.0	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	8	Incendiary	18.0	Arson/Fire	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	0.0	0.0	0.0	0.0	0.0	0.0	1	4.0	Unknown	-99.0	Houses were damaged in this attack.	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	"Maguindanao clashes trap tribe members," Phil...	NaN	NaN	START Primary Collection	0	0	0	0
+181689	2017	12	31	0	NaN	92	India	6	South Asia	Manipur	Imphal	24.798346	93.940430	1.0	0	The incident occurred in the Mantripukhri neig...	12/31/2017: Assailants threw a grenade at a Fo...	1	1	1	0.0	NaN	NaN	0.0	0	0	3	Bombing/Explosion	NaN	NaN	NaN	NaN	2	Government (General)	21.0	Government Building/Facility/Office	Forest Department Manipur	Office	92.0	India	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	-99.0	0.0	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	6	Explosives	7.0	Grenade	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	A thrown grenade was used in the attack.	0.0	0.0	0.0	0.0	0.0	0.0	-9	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	"Trader escapes grenade attack in Imphal," Bus...	NaN	NaN	START Primary Collection	-9	-9	0	-9
+181690	2017	12	31	0	NaN	160	Philippines	5	Southeast Asia	Maguindanao	Cotabato City	7.209594	124.241966	1.0	0	NaN	12/31/2017: An explosive device was discovered...	1	1	1	0.0	NaN	NaN	0.0	0	0	3	Bombing/Explosion	NaN	NaN	NaN	NaN	20	Unknown	NaN	NaN	Unknown	Unknown	160.0	Philippines	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	-99.0	0.0	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	6	Explosives	16.0	Unknown Explosive Type	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	An explosive device containing a detonating co...	0.0	0.0	0.0	0.0	0.0	0.0	0	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	"Security tightened in Cotabato following IED ...	"Security tightened in Cotabato City," Manila ...	NaN	START Primary Collection	-9	-9	0	-9
+#renaming columns
+data.rename(columns={'iyear':'Year','imonth':'Month','iday':"day",'gname':'Group','country_txt':'Country','region_txt':'Region','provstate':'State','city':'City','latitude':'latitude',
+    'longitude':'longitude','summary':'summary','attacktype1_txt':'Attacktype','targtype1_txt':'Targettype','weaptype1_txt':'Weapon','nkill':'kill',
+     'nwound':'Wound'},inplace=True)
+data.head()
+Year	Month	day	extended	resolution	country	Country	region	Region	State	City	latitude	longitude	specificity	vicinity	location	summary	crit1	crit2	crit3	doubtterr	alternative	alternative_txt	multiple	success	suicide	attacktype1	Attacktype	attacktype2	attacktype2_txt	attacktype3	attacktype3_txt	targtype1	Targettype	targsubtype1	targsubtype1_txt	corp1	target1	natlty1	natlty1_txt	targtype2	targtype2_txt	targsubtype2	targsubtype2_txt	corp2	target2	natlty2	natlty2_txt	targtype3	targtype3_txt	targsubtype3	targsubtype3_txt	corp3	target3	natlty3	natlty3_txt	Group	gsubname	gname2	gsubname2	gname3	gsubname3	motive	guncertain1	guncertain2	guncertain3	individual	nperps	nperpcap	claimed	claimmode	claimmode_txt	claim2	claimmode2	claimmode2_txt	claim3	claimmode3	claimmode3_txt	compclaim	weaptype1	Weapon	weapsubtype1	weapsubtype1_txt	weaptype2	weaptype2_txt	weapsubtype2	weapsubtype2_txt	weaptype3	weaptype3_txt	weapsubtype3	weapsubtype3_txt	weaptype4	weaptype4_txt	weapsubtype4	weapsubtype4_txt	weapdetail	kill	nkillus	nkillter	Wound	nwoundus	nwoundte	property	propextent	propextent_txt	propvalue	propcomment	ishostkid	nhostkid	nhostkidus	nhours	ndays	divert	kidhijcountry	ransom	ransomamt	ransomamtus	ransompaid	ransompaidus	ransomnote	hostkidoutcome	hostkidoutcome_txt	nreleased	addnotes	scite1	scite2	scite3	dbsource	INT_LOG	INT_IDEO	INT_MISC	INT_ANY
+0	1970	7	2	0	NaN	58	Dominican Republic	2	Central America & Caribbean	NaN	Santo Domingo	18.456792	-69.951164	1.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	1	Assassination	NaN	NaN	NaN	NaN	14	Private Citizens & Property	68.0	Named Civilian	NaN	Julio Guzman	58.0	Dominican Republic	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	MANO-D	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	13	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1.0	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	0	0	0	0
+1	1970	0	0	0	NaN	130	Mexico	1	North America	Federal	Mexico city	19.371887	-99.086624	1.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	6	Hostage Taking (Kidnapping)	NaN	NaN	NaN	NaN	7	Government (Diplomatic)	45.0	Diplomatic Personnel (outside of embassy, cons...	Belgian Ambassador Daughter	Nadine Chaval, daughter	21.0	Belgium	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	23rd of September Communist League	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	7.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	13	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	1.0	1.0	0.0	NaN	NaN	NaN	Mexico	1.0	800000.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	0	1	1	1
+2	1970	1	0	0	NaN	160	Philippines	5	Southeast Asia	Tarlac	Unknown	15.478598	120.599741	4.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	1	Assassination	NaN	NaN	NaN	NaN	10	Journalists & Media	54.0	Radio Journalist/Staff/Facility	Voice of America	Employee	217.0	United States	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	13	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1.0	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1
+3	1970	1	0	0	NaN	78	Greece	8	Western Europe	Attica	Athens	37.997490	23.762728	1.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	3	Bombing/Explosion	NaN	NaN	NaN	NaN	7	Government (Diplomatic)	46.0	Embassy/Consulate	NaN	U.S. Embassy	217.0	United States	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	6	Explosives	16.0	Unknown Explosive Type	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Explosive	NaN	NaN	NaN	NaN	NaN	NaN	1	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1
+4	1970	1	0	0	NaN	101	Japan	4	East Asia	Fukouka	Fukouka	33.580412	130.396361	1.0	0	NaN	NaN	1	1	1	-9.0	NaN	NaN	0.0	1	0	7	Facility/Infrastructure Attack	NaN	NaN	NaN	NaN	7	Government (Diplomatic)	46.0	Embassy/Consulate	NaN	U.S. Consulate	217.0	United States	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	8	Incendiary	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Incendiary	NaN	NaN	NaN	NaN	NaN	NaN	1	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1
+df.region_txt.unique()
+array(['Central America & Caribbean', 'North America', 'Southeast Asia',
+       'Western Europe', 'East Asia', 'South America', 'Eastern Europe',
+       'Sub-Saharan Africa', 'Middle East & North Africa',
+       'Australasia & Oceania', 'South Asia', 'Central Asia'],
+      dtype=object)
+year = data['Year'].unique()
+years_count = data['Year'].value_counts(dropna = False).sort_index()
+plt.figure(figsize = (18,10))
+fig = px.bar(df, x= year , y=years_count , title="Terrorist Attacks Over the years",
+            labels={
+                'x':"Years",
+                'y':"Number of attacks each year"
+            })
+fig.update_layout(
+font_family="Times New Roman",
+font_color = "Red",title_font_color = "darkgray" ,title_font_size=25  ,
+    font_size=18
+)
+fig.update_layout(height= 1000)
+fig.show()
+<Figure size 1296x720 with 0 Axes>
+a=data['Country'].value_counts().index[0:10]
+print("Country with highest Terrorist Attack :\n" , a)
+
+b=data['Region'].value_counts().index
+print("Region with highest attack:\n",b)
+Country with highest Terrorist Attack :
+ Index(['Iraq', 'Pakistan', 'Afghanistan', 'India', 'Colombia', 'Philippines',
+       'Peru', 'El Salvador', 'United Kingdom', 'Turkey'],
+      dtype='object')
+Region with highest attack:
+ Index(['Middle East & North Africa', 'South Asia', 'South America',
+       'Sub-Saharan Africa', 'Western Europe', 'Southeast Asia',
+       'Central America & Caribbean', 'Eastern Europe', 'North America',
+       'East Asia', 'Central Asia', 'Australasia & Oceania'],
+      dtype='object')
+print("Country with most attacks: ",data["Country"].value_counts().idxmax())
+print("City with most attacks: ",data["City"].value_counts().index[1])
+print("Region with most attacks: ",data["Region"].value_counts().idxmax())
+print("Year with most attacks: ",data["Year"].value_counts().idxmax())
+print("Month with most attacks: ",data["Month"].value_counts().idxmax())
+print("Group with most attacks: ",data["Group"].value_counts().index[1])
+print("Most Attack Types: ",data["Attacktype"].value_counts().idxmax())
+Country with most attacks:  Iraq
+City with most attacks:  Baghdad
+Region with most attacks:  Middle East & North Africa
+Year with most attacks:  2014
+Month with most attacks:  5
+Group with most attacks:  Taliban
+Most Attack Types:  Bombing/Explosion
+countries_with_most_attack = data.Country.value_counts().head(10)
+countries_with_most_attack
+Iraq              24636
+Pakistan          14368
+Afghanistan       12731
+India             11960
+Colombia           8306
+Philippines        6908
+Peru               6096
+El Salvador        5320
+United Kingdom     5235
+Turkey             4292
+Name: Country, dtype: int64
+countries_name = list(countries_with_most_attack.index)
+countries_name
+['Iraq',
+ 'Pakistan',
+ 'Afghanistan',
+ 'India',
+ 'Colombia',
+ 'Philippines',
+ 'Peru',
+ 'El Salvador',
+ 'United Kingdom',
+ 'Turkey']
+x, y = countries_with_most_attack.index, countries_with_most_attack.values
+
+fig, ax = plt.subplots(figsize=(15,5))
+ax.bar(x, y,align="center",edgecolor="black",color="red")
+plt.xticks(rotation=45)
+plt.title("Countries with most terrorism")
+Text(0.5, 1.0, 'Countries with most terrorism')
+
+data_countries = data[data['Country'].isin(countries_name)]
+data_countries.head()
+Year	Month	day	extended	resolution	country	Country	region	Region	State	City	latitude	longitude	specificity	vicinity	location	summary	crit1	crit2	crit3	doubtterr	alternative	alternative_txt	multiple	success	suicide	attacktype1	Attacktype	attacktype2	attacktype2_txt	attacktype3	attacktype3_txt	targtype1	Targettype	targsubtype1	targsubtype1_txt	corp1	target1	natlty1	natlty1_txt	targtype2	targtype2_txt	targsubtype2	targsubtype2_txt	corp2	target2	natlty2	natlty2_txt	targtype3	targtype3_txt	targsubtype3	targsubtype3_txt	corp3	target3	natlty3	natlty3_txt	Group	gsubname	gname2	gsubname2	gname3	gsubname3	motive	guncertain1	guncertain2	guncertain3	individual	nperps	nperpcap	claimed	claimmode	claimmode_txt	claim2	claimmode2	claimmode2_txt	claim3	claimmode3	claimmode3_txt	compclaim	weaptype1	Weapon	weapsubtype1	weapsubtype1_txt	weaptype2	weaptype2_txt	weapsubtype2	weapsubtype2_txt	weaptype3	weaptype3_txt	weapsubtype3	weapsubtype3_txt	weaptype4	weaptype4_txt	weapsubtype4	weapsubtype4_txt	weapdetail	kill	nkillus	nkillter	Wound	nwoundus	nwoundte	property	propextent	propextent_txt	propvalue	propcomment	ishostkid	nhostkid	nhostkidus	nhours	ndays	divert	kidhijcountry	ransom	ransomamt	ransomamtus	ransompaid	ransompaidus	ransomnote	hostkidoutcome	hostkidoutcome_txt	nreleased	addnotes	scite1	scite2	scite3	dbsource	INT_LOG	INT_IDEO	INT_MISC	INT_ANY
+2	1970	1	0	0	NaN	160	Philippines	5	Southeast Asia	Tarlac	Unknown	15.478598	120.599741	4.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	1	Assassination	NaN	NaN	NaN	NaN	10	Journalists & Media	54.0	Radio Journalist/Staff/Facility	Voice of America	Employee	217.0	United States	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	13	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1.0	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1
+26	1970	1	21	0	NaN	160	Philippines	5	Southeast Asia	Metropolitan Manila	Quezon City	14.674280	121.057495	1.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	3	Bombing/Explosion	NaN	NaN	NaN	NaN	7	Government (Diplomatic)	46.0	Embassy/Consulate	NaN	JUSMAG HQ	217.0	United States	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	6	Explosives	15.0	Vehicle	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Explosive	0.0	NaN	NaN	0.0	NaN	NaN	1	3.0	Minor (likely < $1 million)	5000.0	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1
+39	1970	1	31	0	NaN	160	Philippines	5	Southeast Asia	Tarlac	Bamban	15.675051	120.331618	1.0	0	NaN	NaN	1	1	0	1.0	1.0	Insurgency/Guerilla Action	0.0	0	0	9	Unknown	NaN	NaN	NaN	NaN	4	Military	34.0	Military Personnel (soldiers, troops, officers...	U.S. Navy	Seaman	217.0	United States	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	New People's Army (NPA)	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	13	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	1.0	NaN	NaN	0	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	0	1	1	1
+96	1970	3	0	0	NaN	160	Philippines	5	Southeast Asia	Metropolitian Manila	Manila	14.596051	120.978666	1.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	3	Bombing/Explosion	NaN	NaN	NaN	NaN	7	Government (Diplomatic)	46.0	Embassy/Consulate	NaN	U.S. Embassy	217.0	United States	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	6	Explosives	16.0	Unknown Explosive Type	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Explosive	0.0	NaN	NaN	0.0	NaN	NaN	1	3.0	Minor (likely < $1 million)	500.0	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1
+150	1970	3	24	0	NaN	160	Philippines	5	Southeast Asia	Pampanga	Angeles	15.153002	120.591942	1.0	0	NaN	NaN	1	1	0	1.0	1.0	Insurgency/Guerilla Action	0.0	1	0	9	Unknown	NaN	NaN	NaN	NaN	4	Military	34.0	Military Personnel (soldiers, troops, officers...	U.S. Air Force	officer	217.0	United States	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	13	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1.0	1.0	NaN	0.0	0.0	NaN	0	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1
+target = data_countries['Targettype'].value_counts().head(10)
+
+fig, ax = plt.subplots(figsize=(20, 5))
+ax.bar(target.index, target.values, edgecolor = "black", color = "orange")
+plt.xticks(rotation = 45)
+plt.title("Type of Target")
+Text(0.5, 1.0, 'Type of Target')
+
+data.head()
+Year	Month	day	extended	resolution	country	Country	region	Region	State	City	latitude	longitude	specificity	vicinity	location	summary	crit1	crit2	crit3	doubtterr	alternative	alternative_txt	multiple	success	suicide	attacktype1	Attacktype	attacktype2	attacktype2_txt	attacktype3	attacktype3_txt	targtype1	Targettype	targsubtype1	targsubtype1_txt	corp1	target1	natlty1	natlty1_txt	targtype2	targtype2_txt	targsubtype2	targsubtype2_txt	corp2	target2	natlty2	natlty2_txt	targtype3	targtype3_txt	targsubtype3	targsubtype3_txt	corp3	target3	natlty3	natlty3_txt	Group	gsubname	gname2	gsubname2	gname3	gsubname3	motive	guncertain1	guncertain2	guncertain3	individual	nperps	nperpcap	claimed	claimmode	claimmode_txt	claim2	claimmode2	claimmode2_txt	claim3	claimmode3	claimmode3_txt	compclaim	weaptype1	Weapon	weapsubtype1	weapsubtype1_txt	weaptype2	weaptype2_txt	weapsubtype2	weapsubtype2_txt	weaptype3	weaptype3_txt	weapsubtype3	weapsubtype3_txt	weaptype4	weaptype4_txt	weapsubtype4	weapsubtype4_txt	weapdetail	kill	nkillus	nkillter	Wound	nwoundus	nwoundte	property	propextent	propextent_txt	propvalue	propcomment	ishostkid	nhostkid	nhostkidus	nhours	ndays	divert	kidhijcountry	ransom	ransomamt	ransomamtus	ransompaid	ransompaidus	ransomnote	hostkidoutcome	hostkidoutcome_txt	nreleased	addnotes	scite1	scite2	scite3	dbsource	INT_LOG	INT_IDEO	INT_MISC	INT_ANY
+0	1970	7	2	0	NaN	58	Dominican Republic	2	Central America & Caribbean	NaN	Santo Domingo	18.456792	-69.951164	1.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	1	Assassination	NaN	NaN	NaN	NaN	14	Private Citizens & Property	68.0	Named Civilian	NaN	Julio Guzman	58.0	Dominican Republic	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	MANO-D	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	13	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1.0	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	0	0	0	0
+1	1970	0	0	0	NaN	130	Mexico	1	North America	Federal	Mexico city	19.371887	-99.086624	1.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	6	Hostage Taking (Kidnapping)	NaN	NaN	NaN	NaN	7	Government (Diplomatic)	45.0	Diplomatic Personnel (outside of embassy, cons...	Belgian Ambassador Daughter	Nadine Chaval, daughter	21.0	Belgium	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	23rd of September Communist League	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	7.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	13	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	1.0	1.0	0.0	NaN	NaN	NaN	Mexico	1.0	800000.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	0	1	1	1
+2	1970	1	0	0	NaN	160	Philippines	5	Southeast Asia	Tarlac	Unknown	15.478598	120.599741	4.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	1	Assassination	NaN	NaN	NaN	NaN	10	Journalists & Media	54.0	Radio Journalist/Staff/Facility	Voice of America	Employee	217.0	United States	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	13	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1.0	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1
+3	1970	1	0	0	NaN	78	Greece	8	Western Europe	Attica	Athens	37.997490	23.762728	1.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	3	Bombing/Explosion	NaN	NaN	NaN	NaN	7	Government (Diplomatic)	46.0	Embassy/Consulate	NaN	U.S. Embassy	217.0	United States	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	6	Explosives	16.0	Unknown Explosive Type	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Explosive	NaN	NaN	NaN	NaN	NaN	NaN	1	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1
+4	1970	1	0	0	NaN	101	Japan	4	East Asia	Fukouka	Fukouka	33.580412	130.396361	1.0	0	NaN	NaN	1	1	1	-9.0	NaN	NaN	0.0	1	0	7	Facility/Infrastructure Attack	NaN	NaN	NaN	NaN	7	Government (Diplomatic)	46.0	Embassy/Consulate	NaN	U.S. Consulate	217.0	United States	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	8	Incendiary	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Incendiary	NaN	NaN	NaN	NaN	NaN	NaN	1	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1
+plt.figure(figsize=(15,15))
+data['Attacktype'].value_counts().plot.pie(autopct="%1.1f%%")
+plt.show()
+
+# Killed vs Year
+plt.figure(figsize = (15,7))
+data.groupby(['Year'])['kill'].sum().sort_values(ascending=False).head(25).plot(kind = 'bar', colormap = 'Accent')
+plt.xticks(rotation=90)
+plt.title('No. of people killed Year wise')
+plt.ylabel("Killed")
+plt.show()
+
+plt.figure(figsize = (15,7))
+data.groupby(['Country'])['kill'].sum().sort_values(ascending = False).head(10).plot(kind = 'bar', colormap = 'PRGn')
+plt.xticks(rotation=90)
+plt.title('No. of people killed Country wise')
+plt.ylabel("Killed")
+plt.show()
+
+plt.figure(figsize = (15,7))
+data.groupby(['Region'])['kill'].sum().sort_values(ascending = False).head(10).plot(kind = 'bar', colormap = 'seismic')
+plt.xticks(rotation=90)
+plt.title('No. of people killed Region wise')
+plt.ylabel("Killed")
+plt.show()
+
+count_terror = data['Country'].value_counts()[:15].to_frame()
+count_terror.columns=['Attacks']
+count_kill=data.groupby ('Country')['kill'].sum().to_frame()
+count_terror.merge(count_kill,left_index = True,right_index =True,how='left').plot.bar(width=0.9)
+fig=plt.gcf()
+plt.title("Attacks VS Killed", fontsize=20)
+fig.set_size_inches(16,4)
+plt.show()
+
+df=data[['Group','Country','kill']]
+df=df.groupby(['Group','Country'],axis=0).sum().sort_values('kill',ascending=False).drop('Unknown').reset_index().head(10)
+df
+Group	Country	kill
+0	Islamic State of Iraq and the Levant (ISIL)	Iraq	31058.0
+1	Taliban	Afghanistan	29269.0
+2	Boko Haram	Nigeria	16917.0
+3	Shining Path (SL)	Peru	11595.0
+4	Liberation Tigers of Tamil Eelam (LTTE)	Sri Lanka	10928.0
+5	Al-Shabaab	Somalia	8176.0
+6	Farabundo Marti National Liberation Front (FMLN)	El Salvador	8019.0
+7	Islamic State of Iraq and the Levant (ISIL)	Syria	6883.0
+8	Nicaraguan Democratic Force (FDN)	Nicaragua	6630.0
+9	Tehrik-i-Taliban Pakistan (TTP)	Pakistan	6014.0
+plt.figure(figsize = (15,7))
+sns.barplot(x = data['Group'].value_counts()[1:11].values, y = data['Group'].value_counts()[1:11].index,palette='magma')
+plt.title('Top 10 Terrorist Organisation with Highest Terror Attacks')
+plt.ylabel('Terror Group Name')
+plt.xlabel('Number of Attacks')
+plt.xticks(rotation= 90)
+plt.show()
+
+data.head()
+Year	Month	day	extended	resolution	country	Country	region	Region	State	City	latitude	longitude	specificity	vicinity	location	summary	crit1	crit2	crit3	doubtterr	alternative	alternative_txt	multiple	success	suicide	attacktype1	Attacktype	attacktype2	attacktype2_txt	attacktype3	attacktype3_txt	targtype1	Targettype	targsubtype1	targsubtype1_txt	corp1	target1	natlty1	natlty1_txt	targtype2	targtype2_txt	targsubtype2	targsubtype2_txt	corp2	target2	natlty2	natlty2_txt	targtype3	targtype3_txt	targsubtype3	targsubtype3_txt	corp3	target3	natlty3	natlty3_txt	Group	gsubname	gname2	gsubname2	gname3	gsubname3	motive	guncertain1	guncertain2	guncertain3	individual	nperps	nperpcap	claimed	claimmode	claimmode_txt	claim2	claimmode2	claimmode2_txt	claim3	claimmode3	claimmode3_txt	compclaim	weaptype1	Weapon	weapsubtype1	weapsubtype1_txt	weaptype2	weaptype2_txt	weapsubtype2	weapsubtype2_txt	weaptype3	weaptype3_txt	weapsubtype3	weapsubtype3_txt	weaptype4	weaptype4_txt	weapsubtype4	weapsubtype4_txt	weapdetail	kill	nkillus	nkillter	Wound	nwoundus	nwoundte	property	propextent	propextent_txt	propvalue	propcomment	ishostkid	nhostkid	nhostkidus	nhours	ndays	divert	kidhijcountry	ransom	ransomamt	ransomamtus	ransompaid	ransompaidus	ransomnote	hostkidoutcome	hostkidoutcome_txt	nreleased	addnotes	scite1	scite2	scite3	dbsource	INT_LOG	INT_IDEO	INT_MISC	INT_ANY
+0	1970	7	2	0	NaN	58	Dominican Republic	2	Central America & Caribbean	NaN	Santo Domingo	18.456792	-69.951164	1.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	1	Assassination	NaN	NaN	NaN	NaN	14	Private Citizens & Property	68.0	Named Civilian	NaN	Julio Guzman	58.0	Dominican Republic	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	MANO-D	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	13	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1.0	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	0	0	0	0
+1	1970	0	0	0	NaN	130	Mexico	1	North America	Federal	Mexico city	19.371887	-99.086624	1.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	6	Hostage Taking (Kidnapping)	NaN	NaN	NaN	NaN	7	Government (Diplomatic)	45.0	Diplomatic Personnel (outside of embassy, cons...	Belgian Ambassador Daughter	Nadine Chaval, daughter	21.0	Belgium	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	23rd of September Communist League	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	7.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	13	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	1.0	1.0	0.0	NaN	NaN	NaN	Mexico	1.0	800000.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	0	1	1	1
+2	1970	1	0	0	NaN	160	Philippines	5	Southeast Asia	Tarlac	Unknown	15.478598	120.599741	4.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	1	Assassination	NaN	NaN	NaN	NaN	10	Journalists & Media	54.0	Radio Journalist/Staff/Facility	Voice of America	Employee	217.0	United States	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	13	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1.0	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1
+3	1970	1	0	0	NaN	78	Greece	8	Western Europe	Attica	Athens	37.997490	23.762728	1.0	0	NaN	NaN	1	1	1	0.0	NaN	NaN	0.0	1	0	3	Bombing/Explosion	NaN	NaN	NaN	NaN	7	Government (Diplomatic)	46.0	Embassy/Consulate	NaN	U.S. Embassy	217.0	United States	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	6	Explosives	16.0	Unknown Explosive Type	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Explosive	NaN	NaN	NaN	NaN	NaN	NaN	1	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1
+4	1970	1	0	0	NaN	101	Japan	4	East Asia	Fukouka	Fukouka	33.580412	130.396361	1.0	0	NaN	NaN	1	1	1	-9.0	NaN	NaN	0.0	1	0	7	Facility/Infrastructure Attack	NaN	NaN	NaN	NaN	7	Government (Diplomatic)	46.0	Embassy/Consulate	NaN	U.S. Consulate	217.0	United States	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Unknown	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	8	Incendiary	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	Incendiary	NaN	NaN	NaN	NaN	NaN	NaN	1	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	0.0	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	PGIS	-9	-9	1	1
+import folium
+from folium.plugins import MarkerCluster
+filterYr = data["Year"] == 2014
+filterData = data[filterYr]
+reqFields = filterData.loc[:,"City":"longitude"]
+reqFields = reqFields.dropna()
+reqFieldsLst = reqFields.values.tolist()
+map = folium.Map(location=[0,33],tiles="CartoDB positron", zoom_start=2)
+
+markerCluster = folium.plugins.MarkerCluster().add_to(map)
+ 
+for point in range(len(reqFieldsLst)):
+    folium.Marker(location=[reqFieldsLst[point][1],reqFieldsLst[point][2]],
+                            popup=reqFieldsLst[point][0]).add_to(markerCluster)
+    
+map
+Make this Notebook Trusted to load map: File -> Trust Notebook
+Country with most attacks: Iraq
+City with most attacks: Baghdad
+Region with most attacks: Middle East & North Africa
+Year with most attacks: 2014
+Month with most attacks: 5
+Group with most attacks: Taliban
+Most Attack Types: Bombing/Explosion
